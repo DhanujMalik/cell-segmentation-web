@@ -1,6 +1,7 @@
 // Backend integration for advanced image processing
 class BackendIntegration {
-  constructor(baseUrl = "http://localhost:5000") {
+  constructor(baseUrl = "https://cell-segmentation-api.onrender.com")
+ {
     this.baseUrl = baseUrl
   }
 
