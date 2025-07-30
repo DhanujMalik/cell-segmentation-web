@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CellVision Pro - Advanced Cell Segmentation Platform</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-layout {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .control-panel {
+      flex: 1;
+      margin-right: 20px;
+    }
+
+    .display-area {
+      flex: 2;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="file"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .button-group {
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-small {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    .btn-tool {
+      padding: 10px;
+      margin-right: 5px;
+    }
+
+    .btn-tool.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .radio-item input {
+      margin-right: 10px;
+    }
+
+    .checkbox-group label {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .checkbox-item input {
+      margin-right: 10px;
+    }
+
+    .tabs {
+      margin-bottom: 15px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .tab-btn {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    .tab-btn.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .tab-content {
+      display: flex;
+    }
+
+    .tab-panel {
+      display: none;
+      flex: 1;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .progress-container {
+      margin-top: 15px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #4CAF50;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      margin-top: 5px;
+      text-align: center;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 600px;
+    }
+
+    .canvas-container canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .label-canvas {
+      pointer-events: none;
+    }
+
+    .crop-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      display: none;
+    }
+
+    .upload-placeholder {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      color: #888;
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .status-bar span {
+      margin-right: 10px;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .frame-navigation {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .frame-navigation button {
+      margin-right: 5px;
+    }
+
+    .frame-input {
+      width: 50px;
+      margin-right: 5px;
+    }
+
+    .frame-slider-container {
+      margin-bottom: 10px;
+    }
+
+    .frame-preview {
+      margin-bottom: 10px;
+    }
+
+    .frame-info {
+      margin-bottom: 10px;
+    }
+
+    .label-preview-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .label-preview-canvas {
+      margin-right: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo-section">
+          <div class="logo-icon">
+            <i class="fas fa-microscope"></i>
+          </div>
+          <div class="logo-text">
+            <h1>CellVision Pro</h1>
+            <p class="tagline">Advanced Cell Segmentation Platform</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline" id="help-btn">
+            <i class="fas fa-question-circle"></i>
+            Help
+          </button>
+          <button class="btn btn-outline" id="settings-btn">
+            <i class="fas fa-cog"></i>
+            Settings
+          </button>
+        </div>
+      </div>
+    </header>
+    
+    <div class="main-layout">
+      <!-- Control Panel -->
+      <div class="control-panel">
+        <!-- Step 1: Input Selection -->
+        <div class="card" id="input-card">
+          <div class="card-header">
+            <h3>1. Input Selection</h3>
+          </div>
+          <div class="card-content">
+            <div class="radio-group">
+              <label class="radio-item">
+                <input type="radio" name="inputType" value="image" checked>
+                <span>Single Image</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="inputType" value="folder">
+                <span>Image Folder</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="inputType" value="video">
+                <span>Video File</span>
+              </label>
+            </div>
+            
+            <div class="button-group">
+              <button id="browse-btn" class="btn btn-primary">
+                <span class="icon">📁</span>
+                Browse
+              </button>
+              <button id="reset-btn" class="btn btn-secondary">Reset</button>
+            </div>
+            
+            <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+            <p id="file-status" class="file-status">No files selected</p>
+            <!-- Video Settings (initially hidden) -->
+            <div id="video-settings" class="video-settings" style="display: none;">
+              <div class="control-group">
+                <label for="max-frames">Max frames to process:</label>
+                <input type="number" id="max-frames" value="100" min="1" max="1000" class="number-input">
+              </div>
+              
+              <div class="control-group">
+                <label for="frame-interval">Frame interval:</label>
+                <input type="number" id="frame-interval" value="1" min="1" max="100" class="number-input">
+              </div>
+              
+              <div class="radio-group">
+                <label class="radio-item">
+                  <input type="radio" name="videoMode" value="frames" checked>
+                  <span>By Frame Count</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="videoMode" value="time">
+                  <span>By Time Interval (seconds)</span>
+                </label>
+              </div>
+              
+              <div id="time-interval-control" class="control-group" style="display: none;">
+                <label for="time-interval">Time interval (seconds):</label>
+                <input type="number" id="time-interval" value="1.0" min="0.1" max="60" step="0.1" class="number-input">
+              </div>
+              
+              <button id="load-video-frames" class="btn btn-primary full-width">Load Video Frames</button>
+            </div>
+            <!-- Frame Selection (initially hidden) -->
+            <div id="frame-selector" class="frame-selector" style="display: none;">
+              <div class="control-group">
+                <label>Select reference frame:</label>
+                <div class="frame-navigation">
+                  <button id="frame-prev-10" class="btn btn-small">◄◄</button>
+                  <button id="frame-prev" class="btn btn-small">◄</button>
+                  <input type="number" id="frame-number" value="1" min="1" class="frame-input">
+                  <span id="frame-total">/ 1</span>
+                  <button id="frame-next" class="btn btn-small">►</button>
+                  <button id="frame-next-10" class="btn btn-small">►►</button>
+                </div>
+              </div>
+              
+              <div class="frame-slider-container">
+                <input type="range" id="frame-slider" min="0" max="0" value="0" class="slider">
+              </div>
+              
+              <div id="frame-preview" class="frame-preview">
+                <canvas id="preview-canvas" width="320" height="240"></canvas>
+              </div>
+              
+              <div class="frame-info">
+                <p id="current-frame-info">Frame 1 of 1</p>
+              </div>
+              
+              <div class="button-group">
+                <button id="cancel-frame-selection" class="btn btn-secondary">Cancel</button>
+                <button id="select-reference-frame" class="btn btn-primary">Select and Display</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Step 2: Preprocessing -->
+        <div class="card disabled" id="preprocess-card">
+          <div class="card-header">
+            <h3>2. Preprocessing</h3>
+          </div>
+          <div class="card-content">
+            <label class="checkbox-item">
+              <input type="checkbox" id="enable-crop">
+              <span>Enable Cropping</span>
+            </label>
+            
+            <div id="crop-controls" class="crop-controls" style="display: none;">
+              <button id="select-area-btn" class="btn btn-secondary">
+                <span class="icon">✂️</span>
+                Select Area
+              </button>
+              
+              <label class="checkbox-item">
+                <input type="checkbox" id="apply-crop-all">
+                <span>Apply same crop to all images</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Step 3: Interactive Labeling -->
+        <div class="card disabled" id="labeling-card">
+          <div class="card-header">
+            <h3>3. Interactive Labeling</h3>
+          </div>
+          <div class="card-content">
+            <div class="control-group">
+              <label for="brush-size">Brush Size: <span id="brush-size-value">5</span></label>
+              <input type="range" id="brush-size" min="1" max="20" value="5" class="slider">
+            </div>
+            
+            <div class="control-group">
+              <label for="current-label">Current Label</label>
+              <select id="current-label" class="select">
+                <option value="1" data-color="#FF0000">Cell (1)</option>
+                <option value="2" data-color="#00FF00">Background (2)</option>
+                <option value="3" data-color="#0000FF">Nucleus (3)</option>
+                <option value="4" data-color="#FFFF00">Membrane (4)</option>
+              </select>
+            </div>
+            
+            <div class="control-group">
+              <label>Label Preview:</label>
+              <div class="label-preview-container">
+                <canvas id="label-preview" width="20" height="20" class="label-preview-canvas"></canvas>
+                <span id="current-label-text">Cell (1)</span>
+              </div>
+            </div>
+            
+            <div class="tool-buttons">
+              <button id="brush-tool" class="btn btn-tool active">
+                <span class="icon">🖌️</span>
+              </button>
+              <button id="erase-tool" class="btn btn-tool">
+                <span class="icon">🧽</span>
+              </button>
+              <button id="crop-tool" class="btn btn-tool">
+                <span class="icon">✂️</span>
+              </button>
+              <button id="reset-view" class="btn btn-tool">
+                <span class="icon">🔄</span>
+              </button>
+            </div>
+            
+            <div class="button-group">
+              <button id="clear-labels" class="btn btn-secondary">Clear Labels</button>
+              <button id="train-classifier" class="btn btn-primary">Train Classifier</button>
+            </div>
+          </div>
+        </div>
+        <!-- Step 4: Feature Selection -->
+        <div class="card disabled" id="features-card">
+          <div class="card-header">
+            <h3>4. Feature Selection</h3>
+          </div>
+          <div class="card-content">
+            <div class="tabs">
+              <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="color">Color</button>
+                <button class="tab-btn" data-tab="texture">Edge/Texture</button>
+              </div>
+              
+              <div class="tab-content">
+                <div id="color-tab" class="tab-panel active">
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="raw">
+                    <span>Raw</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="gaussian">
+                    <span>Gaussian</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="laplacian">
+                    <span>Laplacian</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="gradient">
+                    <span>Gradient</span>
+                  </label>
+                </div>
+                
+                <div id="texture-tab" class="tab-panel">
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="sobel">
+                    <span>Sobel</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="gabor">
+                    <span>Gabor</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="hessian">
+                    <span>Hessian</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="structure-tensor">
+                    <span>Structure Tensor</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <button id="apply-features" class="btn btn-primary full-width">Apply Features</button>
+          </div>
+        </div>
+        <!-- Step 5: Processing -->
+        <div class="card disabled" id="processing-card">
+          <div class="card-header">
+            <h3>5. Processing</h3>
+          </div>
+          <div class="card-content">
+            <button id="run-segmentation" class="btn btn-primary full-width">Run Segmentation</button>
+            
+            <div id="progress-container" class="progress-container" style="display: none;">
+              <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+              </div>
+              <p id="progress-text" class="progress-text">0%</p>
+            </div>
+            
+            <button id="download-results" class="btn btn-secondary full-width">
+              <span class="icon">💾</span>
+              Download Results
+            </button>
+            
+            Video batch processing controls
+            <div id="video-batch-controls" class="video-batch-controls" style="display: none;">
+              <h4>Video Batch Processing</h4>
+              <label class="checkbox-item">
+                <input type="checkbox" id="binary-output" checked>
+                <span>Binary output (White cells on black background)</span>
+              </label>
+              
+              <button id="process-all-frames" class="btn btn-primary full-width" disabled>
+                Process All Video Frames
+              </button>
+              
+              <button id="stop-processing" class="btn btn-secondary full-width" disabled>
+                Stop Processing
+              </button>
+              
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div id="frame-progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="frame-progress-text" class="progress-text">Ready to process video frames</p>
+              </div>
+            </div>
+            
+            <div class="batch-processing-section">
+              <h4>Batch Processing</h4>
+              
+              <div class="control-group">
+                <label for="output-format">Output Format:</label>
+                <select id="output-format" class="select">
+                  <option value="PNG">PNG</option>
+                  <option value="JPG">JPG</option>
+                  <option value="TIFF">TIFF</option>
+                </select>
+              </div>
+              
+              <div class="control-group">
+                <button id="select-output-folder" class="btn btn-secondary">
+                  <span class="icon">📁</span>
+                  Select Output Folder
+                </button>
+                <span id="output-folder-status">No folder selected</span>
+              </div>
+              
+              <div class="control-group">
+                <button id="start-batch-processing" class="btn btn-primary full-width" disabled>
+                  Start Batch Processing
+                </button>
+                <button id="stop-batch-processing" class="btn btn-secondary full-width" disabled>
+                  Stop Batch Processing
+                </button>
+              </div>
+              
+              <div id="batch-status" class="batch-status">Ready for batch processing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Display Area -->
+      <div class="display-area">
+        <div class="card">
+          <div class="card-header">
+            <h3>Display</h3>
+            <div class="zoom-controls">
+              <button id="zoom-in" class="btn btn-small">🔍+</button>
+              <button id="zoom-out" class="btn btn-small">🔍-</button>
+              <button id="reset-zoom" class="btn btn-small">Reset Zoom</button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="canvas-container" id="canvas-container">
+              <canvas id="main-canvas"></canvas>
+              <canvas id="label-canvas"></canvas>
+              <div id="crop-overlay" class="crop-overlay"></div>
+              
+              <div id="upload-placeholder" class="upload-placeholder">
+                <div class="upload-icon">📁</div>
+                <p>Upload an image to get started</p>
+              </div>
+            </div>
+            
+            <div class="status-bar">
+              <span id="zoom-status">Zoom: 100%</span>
+              <span id="tool-status">Tool: brush</span>
+              <span id="brush-status">Brush Size: 5</span>
+              <span id="label-status">Current Label: Cell</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
