@@ -445,6 +445,112 @@
             </div>
           </div>
         </div>
+       <!-- Step 3: Feature Selection -->
+        <div class="card disabled" id="features-card">
+          <div class="card-header">
+            <h3>3. Feature Selection</h3>
+          </div>
+          <div class="card-content">
+            <div class="tabs">
+              <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="color">Color</button>
+                <button class="tab-btn" data-tab="texture">Edge/Texture</button>
+              </div>
+              
+              <div class="tab-content">
+                <div id="color-tab" class="tab-panel active">
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="raw">
+                    <span>Raw</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="gaussian">
+                    <span>Gaussian</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="laplacian">
+                    <span>Laplacian</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="gradient">
+                    <span>Gradient</span>
+                  </label>
+                </div>
+                
+                <div id="texture-tab" class="tab-panel">
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="sobel">
+                    <span>Sobel</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="gabor">
+                    <span>Gabor</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="hessian">
+                    <span>Hessian</span>
+                  </label>
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="features" value="structure-tensor">
+                    <span>Structure Tensor</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <button id="apply-features" class="btn btn-primary full-width">Apply Features</button>
+          </div>
+        </div>
+        <!-- Step 4: Interactive Labeling -->
+        <div class="card disabled" id="labeling-card">
+          <div class="card-header">
+            <h3>4. Interactive Labeling</h3>
+          </div>
+          <div class="card-content">
+            <div class="control-group">
+              <label for="brush-size">Brush Size: <span id="brush-size-value">5</span></label>
+              <input type="range" id="brush-size" min="1" max="20" value="5" class="slider">
+            </div>
+            
+            <div class="control-group">
+              <label for="current-label">Current Label</label>
+              <select id="current-label" class="select">
+                <option value="1" data-color="#FF0000">Cell (1)</option>
+                <option value="2" data-color="#00FF00">Background (2)</option>
+                <option value="3" data-color="#0000FF">Nucleus (3)</option>
+                <option value="4" data-color="#FFFF00">Membrane (4)</option>
+              </select>
+            </div>
+            
+            <div class="control-group">
+              <label>Label Preview:</label>
+              <div class="label-preview-container">
+                <canvas id="label-preview" width="20" height="20" class="label-preview-canvas"></canvas>
+                <span id="current-label-text">Cell (1)</span>
+              </div>
+            </div>
+            
+            <div class="tool-buttons">
+              <button id="brush-tool" class="btn btn-tool active">
+                <span class="icon">🖌️</span>
+              </button>
+              <button id="erase-tool" class="btn btn-tool">
+                <span class="icon">🧽</span>
+              </button>
+              <button id="crop-tool" class="btn btn-tool">
+                <span class="icon">✂️</span>
+              </button>
+              <button id="reset-view" class="btn btn-tool">
+                <span class="icon">🔄</span>
+              </button>
+            </div>
+            
+            <div class="button-group">
+              <button id="clear-labels" class="btn btn-secondary">Clear Labels</button>
+              <button id="train-classifier" class="btn btn-primary">Train Classifier</button>
+            </div>
+          </div>
+        </div>
         <!-- Step 4: Feature Selection -->
         <div class="card disabled" id="features-card">
           <div class="card-header">
@@ -499,56 +605,6 @@
             </div>
             
             <button id="apply-features" class="btn btn-primary full-width">Apply Features</button>
-          </div>
-        </div>
-        <!-- Step 3: Interactive Labeling -->
-        <div class="card disabled" id="labeling-card">
-          <div class="card-header">
-            <h3>3. Interactive Labeling</h3>
-          </div>
-          <div class="card-content">
-            <div class="control-group">
-              <label for="brush-size">Brush Size: <span id="brush-size-value">5</span></label>
-              <input type="range" id="brush-size" min="1" max="20" value="5" class="slider">
-            </div>
-            
-            <div class="control-group">
-              <label for="current-label">Current Label</label>
-              <select id="current-label" class="select">
-                <option value="1" data-color="#FF0000">Cell (1)</option>
-                <option value="2" data-color="#00FF00">Background (2)</option>
-                <option value="3" data-color="#0000FF">Nucleus (3)</option>
-                <option value="4" data-color="#FFFF00">Membrane (4)</option>
-              </select>
-            </div>
-            
-            <div class="control-group">
-              <label>Label Preview:</label>
-              <div class="label-preview-container">
-                <canvas id="label-preview" width="20" height="20" class="label-preview-canvas"></canvas>
-                <span id="current-label-text">Cell (1)</span>
-              </div>
-            </div>
-            
-            <div class="tool-buttons">
-              <button id="brush-tool" class="btn btn-tool active">
-                <span class="icon">🖌️</span>
-              </button>
-              <button id="erase-tool" class="btn btn-tool">
-                <span class="icon">🧽</span>
-              </button>
-              <button id="crop-tool" class="btn btn-tool">
-                <span class="icon">✂️</span>
-              </button>
-              <button id="reset-view" class="btn btn-tool">
-                <span class="icon">🔄</span>
-              </button>
-            </div>
-            
-            <div class="button-group">
-              <button id="clear-labels" class="btn btn-secondary">Clear Labels</button>
-              <button id="train-classifier" class="btn btn-primary">Train Classifier</button>
-            </div>
           </div>
         </div>
         <!-- Step 5: Processing -->
